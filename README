@@ -6,8 +6,9 @@ The JSR80 web site is: http://javax-usb.org
 * Requirements *
 ****************
 
-Java      Standard Edition version 1.2 or greater - Micro Edition has not been tested but may work
-ANT       http://jakarta.apache.org/ant
+Java          Standard Edition version 1.2 or greater - Micro Edition has not been tested but may work
+ANT           http://jakarta.apache.org/ant
+JSR80 API     You need the javax.usb API jarfile (jsr80.jar) in your CLASSPATH
 
 *********
 * Build *
