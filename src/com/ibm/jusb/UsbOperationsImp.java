@@ -248,8 +248,6 @@ public class UsbOperationsImp implements StandardOperations,VendorOperations,Cla
 
 		syncSubmit( request );
 
-		getUsbDeviceImp().setActiveUsbConfigNumber( (byte)wValue );
-
 		return request;
 	}
 
@@ -291,18 +289,16 @@ public class UsbOperationsImp implements StandardOperations,VendorOperations,Cla
 	/**
 	 * Allows the host to select an alternate setting for the specified interface
  	 * See USB 1.1 spec section 9.4.9
-	 * @param wIndex the interface number
 	 * @param wValue the alternate setting value
+	 * @param wIndex the interface number
 	 * @return a Request object that is created for this submission
 	 * @exception javax.usb.RequestException if something goes wrong sumitting the request for this operation
 	 */
-	public Request setInterface( short wIndex, short wValue ) throws RequestException
+	public Request setInterface( short wValue, short wIndex ) throws RequestException
 	{
-		Request request = getRequestImpFactory().createSetInterfaceRequest( wIndex, wValue );
+		Request request = getRequestImpFactory().createSetInterfaceRequest( wValue, wIndex );
 
 		syncSubmit( request );
-
-		getUsbDeviceImp().getActiveUsbConfigImp().getUsbInterfaceImp( (byte)wIndex ).setActiveAlternateSettingNumber( (byte)wValue );
 
 		return request;
 	}
