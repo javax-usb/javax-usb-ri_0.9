@@ -34,6 +34,13 @@ public class UsbInterfacePanel extends UsbPanel
 		usbInterface = iface;
 		createClaimPanel();
 		string = "UsbInterface " + iface.getInterfaceNumber();
+		
+		// add empty space, make the UI more consistent
+		add(Box.createVerticalGlue());
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(Box.createRigidArea(new Dimension(0,10)));
+		add(panel);
+		
 		refresh();
 	}
 

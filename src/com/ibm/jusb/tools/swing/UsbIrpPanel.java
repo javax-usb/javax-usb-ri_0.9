@@ -30,7 +30,8 @@ public class UsbIrpPanel extends JPanel implements Cloneable
 {
 	public UsbIrpPanel()
 	{
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout( new BorderLayout());
 
 		irpCheckBox.addChangeListener(irpListener);
 		refreshButton.addActionListener(refreshListener);
@@ -39,12 +40,14 @@ public class UsbIrpPanel extends JPanel implements Cloneable
 		packetOptionsPanel.add(syncCheckBox);
 		packetOptionsPanel.add(irpCheckBox);
 		packetOptionsPanel.add(acceptShortCheckBox);
+		
 		buttonPanel.add(refreshButton);
 		buttonPanel.add(clearButton);
 
-		add(packetOptionsPanel);
-		add(buttonPanel);
-		add(packetDataScroll);
+		add(packetOptionsPanel, BorderLayout.NORTH);
+		add(packetDataScroll, BorderLayout.CENTER);
+		add(buttonPanel, BorderLayout.SOUTH);
+
 	}
 
 	public String toString() { return "Buffer @" + UsbUtil.toHexString(hashCode()); }

@@ -33,6 +33,12 @@ public class UsbConfigPanel extends UsbPanel
 		super();
 		usbConfig = config;
 		string = "UsbConfig " + config.getConfigNumber();
+		
+		add(Box.createVerticalGlue());
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(Box.createRigidArea(new Dimension(0,10)));
+		add(panel);
+		
 		refresh();
 	}
 

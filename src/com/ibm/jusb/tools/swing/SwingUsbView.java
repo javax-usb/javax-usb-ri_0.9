@@ -47,7 +47,7 @@ public class SwingUsbView
 
 		tree.setSelectionPath(new TreePath(rootNode.getPath()));
 
-		frame.setSize(DEFAULT_SIZE);
+		frame.setSize(MID_SIZE);
 
 		services.addUsbServicesListener(topologyListener);
 	}
@@ -62,7 +62,7 @@ public class SwingUsbView
 		s.frame.setVisible(true);
 
 		/* Since Swing sucks, this can't be done before it's visible, or it doesn't actually do anything. */
-		s.splitPane.setDividerLocation(0.50);
+		s.splitPane.setDividerLocation(0.35);
 	}
 
 	protected void createTree(UsbHub hub, DefaultMutableTreeNode node)
@@ -250,5 +250,6 @@ public class SwingUsbView
 		};
 
 	private static final Dimension DEFAULT_SIZE = new Dimension(640,480);
+	private static final Dimension MID_SIZE = new Dimension(800,600);
 
 }

@@ -72,6 +72,15 @@ public class UsbPipePanel extends UsbPanel
 		openClosePanel.add(closeButton);
 		openClosePanel.add(clearButton);
 
+		buttonsPanel.add(upButton);
+		buttonsPanel.add(newPacketButton);
+		buttonsPanel.add(downButton);
+		buttonsPanel.add(copyPacketButton);
+		buttonsPanel.add(submitButton);
+		buttonsPanel.add(removeButton);
+
+		/*
+
 		submitButtonLeftPanel.setLayout(new BoxLayout(submitButtonLeftPanel, BoxLayout.Y_AXIS));
 		submitButtonLeftPanel.add(submitButton);
 		submitButtonLeftPanel.add(newPacketButton);
@@ -81,18 +90,48 @@ public class UsbPipePanel extends UsbPanel
 		submitButtonRightPanel.add(upButton);
 		submitButtonRightPanel.add(downButton);
 
+		*/
+
 		irpPanel.setLayout(irpLayout);
 
 		packetPanel.add(packetJList);
 
+		/*
 		submitBox.add(submitButtonLeftPanel);
 		submitBox.add(packetListScroll);
 		submitBox.add(submitButtonRightPanel);
+		*/
+
+		JPanel panel = new JPanel();
+		submitPanel.add(packetListScroll, BorderLayout.CENTER);
+		panel = new JPanel();
+		panel.add(buttonsPanel);
+		submitPanel.add(panel, BorderLayout.EAST);
+		submitPanel.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+
 
 		add(openClosePanel);
 		add(outputScroll);
-		add(submitBox);
+		
+		add(submitPanel);
+		add(Box.createVerticalGlue());
 		add(irpPanel);
+		
+		refreshButtons();
+	}
+	
+	/**
+	 * Method refreshButtons.
+	 */
+	private void refreshButtons() {
+		
+		submitButton.setEnabled( packetList.size() > 0 );
+		upButton.setEnabled( packetList.size() > 0 && getSelectedIndex() > 0 );
+		downButton.setEnabled( packetList.size() > 0 && getSelectedIndex() != packetList.size() - 1 );
+		removeButton.setEnabled( packetList.size() > 0 );
+		copyPacketButton.setEnabled( packetList.size() > 0 );
+		newPacketButton.setEnabled( true );
+		
 	}
 
 	protected int getSelectedIndex()
@@ -107,6 +146,7 @@ public class UsbPipePanel extends UsbPanel
 		if (!packetList.isEmpty())
 			irpLayout.show(irpPanel, packetList.get(getSelectedIndex()).toString());
 		validate();
+		refreshButtons();
 	}
 
 	protected void open()
@@ -151,6 +191,7 @@ public class UsbPipePanel extends UsbPanel
 		} catch ( NumberFormatException nfE ) {
 			JOptionPane.showMessageDialog(null, "NumberFormatException in " + panel + " : " + nfE.getMessage());
 		}
+
 	}
 
 	protected void addPacket(UsbIrpPanel newPanel)
@@ -162,6 +203,7 @@ public class UsbPipePanel extends UsbPanel
 		if (0 <= index)
 			packetJList.setSelectedIndex(index);
 		updateSelection();
+		refreshButtons();
 	}
 
 	protected void copyPacket()
@@ -184,6 +226,7 @@ public class UsbPipePanel extends UsbPanel
 					packetJList.setSelectedIndex(index);
 			updateSelection();
 		}
+		refreshButtons();
 	}
 
 	protected void upPacket()
@@ -198,6 +241,7 @@ public class UsbPipePanel extends UsbPanel
 			packetJList.setSelectedIndex(index-1);
 			updateSelection();
 		}
+		refreshButtons();
 	}
 
 	protected void downPacket()
@@ -212,6 +256,7 @@ public class UsbPipePanel extends UsbPanel
 			packetJList.setSelectedIndex(index+1);
 			updateSelection();
 		}
+		refreshButtons();
 	}
 
 	protected void gotData(byte[] data, int len)
@@ -227,6 +272,9 @@ public class UsbPipePanel extends UsbPanel
 	{
 		JOptionPane.showMessageDialog(null, "Got UsbPipeErrorEvent code " + error + " : " + uE.getMessage());
 	}
+
+	private JPanel buttonsPanel = new JPanel( new GridLayout(3,2,2,2));
+	private JPanel submitPanel = new JPanel( new BorderLayout());
 
 	private JPanel openClosePanel = new JPanel();
 	private JTextArea outputTextArea = new JTextArea();

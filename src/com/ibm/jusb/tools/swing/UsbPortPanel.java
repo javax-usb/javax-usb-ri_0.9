@@ -33,6 +33,12 @@ public class UsbPortPanel extends UsbPanel
 		super();
 		usbPort = port;
 		string = "UsbPort " + port.getPortNumber();
+		
+		add(Box.createVerticalGlue());
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(Box.createRigidArea(new Dimension(0,10)));
+		add(panel);
+		
 		refresh();
 	}
 

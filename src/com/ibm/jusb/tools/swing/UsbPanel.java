@@ -27,9 +27,12 @@ public abstract class UsbPanel extends JPanel
 		refreshButton.addActionListener(refreshListener);
 
 		refreshPanel.add(refreshButton);
-
+		
+		textScroll.setBorder(BorderFactory.createEmptyBorder(5,2,5,2));
+		
 		add(refreshPanel);
 		add(textScroll);
+		
 	}
 
 	public String toString() { return string; }

@@ -33,40 +33,37 @@ public class RequestPanel extends JPanel implements Cloneable
 {
 	public RequestPanel()
 	{
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		setLayout( new BorderLayout());
 
 		refreshButton.addActionListener(refreshListener);
 		clearButton.addActionListener(clearListener);
 
-		Box setupPacketBox = new Box(BoxLayout.Y_AXIS);
-		bmRequestTypeBox.add(bmRequestTypeLabel);
-		bmRequestTypePanel.add(bmRequestTypeField);
-		bmRequestTypeBox.add(bmRequestTypePanel);
-		setupPacketBox.add(bmRequestTypeBox);
-		bRequestBox.add(bRequestLabel);
-		bRequestPanel.add(bRequestField);
-		bRequestBox.add(bRequestPanel);
-		setupPacketBox.add(bRequestBox);
-		wValueBox.add(wValueLabel);
-		wValuePanel.add(wValueField);
-		wValueBox.add(wValuePanel);
-		setupPacketBox.add(wValueBox);
-		wIndexBox.add(wIndexLabel);
-		wIndexPanel.add(wIndexField);
-		wIndexBox.add(wIndexPanel);
-		setupPacketBox.add(wIndexBox);
-
-		packetOptionsPanel.add(syncCheckBox);
+		JPanel setupPacketPanel = new JPanel( new GridLayout(4,2,2,2));
+		setupPacketPanel.add(bmRequestTypeLabel);
+		setupPacketPanel.add(bmRequestTypeField);
+		setupPacketPanel.add(bRequestLabel);
+		setupPacketPanel.add(bRequestField);
+		setupPacketPanel.add(wValueLabel);
+		setupPacketPanel.add(wValueField);
+		setupPacketPanel.add(wIndexLabel);
+		setupPacketPanel.add(wIndexField);
+		
+		JPanel panel = new JPanel( new BorderLayout());
+		panel.add(setupPacketPanel, BorderLayout.CENTER);
+		panel.setBorder(BorderFactory.createEmptyBorder(2,2,4,2));
+		
+		buttonPanel.add(syncCheckBox);
 		buttonPanel.add(refreshButton);
 		buttonPanel.add(clearButton);
 
-		Box rightBox = new Box(BoxLayout.Y_AXIS);
-		rightBox.add(packetOptionsPanel);
-		rightBox.add(buttonPanel);
-		rightBox.add(packetDataScroll);
+		JPanel rightPanel = new JPanel(new BorderLayout());
+		
+		rightPanel.add(packetDataScroll, BorderLayout.CENTER);
+		rightPanel.add(buttonPanel, BorderLayout.SOUTH);
+		rightPanel.setBorder(BorderFactory.createEmptyBorder(2,2,3,2));
 
-		add(setupPacketBox);
-		add(rightBox);
+		add(panel, BorderLayout.WEST);
+		add(rightPanel, BorderLayout.CENTER);
 	}
 
 	public String toString() { return "Buffer @" + UsbUtil.toHexString(hashCode()); }
@@ -145,7 +142,7 @@ public class RequestPanel extends JPanel implements Cloneable
 	private JPanel buttonPanel = new JPanel();
 	private Vector requestTypeVector = new Vector();
 	private Box bmRequestTypeBox = new Box(BoxLayout.X_AXIS);
-	private JLabel bmRequestTypeLabel = new JLabel("bmRequestType");
+	private JLabel bmRequestTypeLabel = new JLabel("bmReqType");
 	private JPanel bmRequestTypePanel = new JPanel();
 	protected JTextField bmRequestTypeField = new JTextField("00", 4);
 	private Box bRequestBox = new Box(BoxLayout.X_AXIS);

@@ -82,29 +82,49 @@ public class UsbDevicePanel extends UsbPanel
 		packetJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		packetJList.addListSelectionListener(packetListListener);
 
-		clearPanel.add(clearButton);
-
-		submitButtonLeftPanel.setLayout(new BoxLayout(submitButtonLeftPanel, BoxLayout.Y_AXIS));
-		submitButtonLeftPanel.add(submitButton);
-		submitButtonLeftPanel.add(newPacketButton);
-		submitButtonLeftPanel.add(copyPacketButton);
-		submitButtonRightPanel.setLayout(new BoxLayout(submitButtonRightPanel, BoxLayout.Y_AXIS));
-		submitButtonRightPanel.add(removeButton);
-		submitButtonRightPanel.add(upButton);
-		submitButtonRightPanel.add(downButton);
+		clearPanel.add(outputScroll, BorderLayout.CENTER);
+		JPanel panel = new JPanel();
+		panel.add(clearButton);
+		clearPanel.add(panel, BorderLayout.EAST);
+		clearPanel.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
 
 		requestPanel.setLayout(requestLayout);
 
 		packetPanel.add(packetJList);
 
-		submitBox.add(submitButtonLeftPanel);
-		submitBox.add(packetListScroll);
-		submitBox.add(submitButtonRightPanel);
+		buttonsPanel.add(upButton);
+		buttonsPanel.add(newPacketButton);
+		buttonsPanel.add(downButton);
+		buttonsPanel.add(copyPacketButton);
+		buttonsPanel.add(submitButton);
+		buttonsPanel.add(removeButton);
 
+		submitPanel.add(packetListScroll, BorderLayout.CENTER);
+		panel = new JPanel();
+		panel.add(buttonsPanel);
+		submitPanel.add(panel, BorderLayout.EAST);
+		submitPanel.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+		
 		add(clearPanel);
-		add(outputScroll);
-		add(submitBox);
+		add(Box.createRigidArea(new Dimension(0, 5)));
+		add(submitPanel);
 		add(requestPanel);
+		
+		refreshButtons();
+	}
+
+	/**
+	 * Method init.
+	 */
+	private void refreshButtons() {
+		
+		submitButton.setEnabled( packetList.size() > 0 );
+		upButton.setEnabled( packetList.size() > 0 && getSelectedIndex() > 0 );
+		downButton.setEnabled( packetList.size() > 0 && getSelectedIndex() != packetList.size() - 1 );
+		removeButton.setEnabled( packetList.size() > 0 );
+		copyPacketButton.setEnabled( packetList.size() > 0 );
+		newPacketButton.setEnabled( true );
+
 	}
 
 	protected int getSelectedIndex()
@@ -119,6 +139,7 @@ public class UsbDevicePanel extends UsbPanel
 		if (!packetList.isEmpty())
 			requestLayout.show(requestPanel, packetList.get(getSelectedIndex()).toString());
 		validate();
+		refreshButtons();
 	}
 
 	protected void submit()
@@ -147,6 +168,7 @@ public class UsbDevicePanel extends UsbPanel
 		if (0 <= index)
 			packetJList.setSelectedIndex(index);
 		updateSelection();
+		refreshButtons();
 	}
 
 	protected void copyPacket()
@@ -169,6 +191,7 @@ public class UsbDevicePanel extends UsbPanel
 					packetJList.setSelectedIndex(index);
 			updateSelection();
 		}
+		refreshButtons();
 	}
 
 	protected void upPacket()
@@ -183,6 +206,7 @@ public class UsbDevicePanel extends UsbPanel
 			packetJList.setSelectedIndex(index-1);
 			updateSelection();
 		}
+		refreshButtons();
 	}
 
 	protected void downPacket()
@@ -197,6 +221,7 @@ public class UsbDevicePanel extends UsbPanel
 			packetJList.setSelectedIndex(index+1);
 			updateSelection();
 		}
+		refreshButtons();
 	}
 
 	protected void gotData(byte[] data, int len)
@@ -213,14 +238,16 @@ public class UsbDevicePanel extends UsbPanel
 		JOptionPane.showMessageDialog(null, "Got UsbDeviceErrorEvent code " + error + " : " + uE.getMessage());
 	}
 
-	private JPanel clearPanel = new JPanel();
+	private JPanel clearPanel = new JPanel(new BorderLayout());
 	private JTextArea outputTextArea = new JTextArea();
+	private JPanel submitPanel = new JPanel( new BorderLayout());
 	private JScrollPane outputScroll = new JScrollPane(outputTextArea);
 	private Vector packetList = new Vector();
 	private JList packetJList = new JList();
 	private JPanel packetPanel = new JPanel();
 	private JScrollPane packetListScroll = new JScrollPane(packetPanel);
 	private Box submitBox = new Box(BoxLayout.X_AXIS);
+	private JPanel buttonsPanel = new JPanel( new GridLayout(3,2,2,2));
 	private JPanel submitButtonLeftPanel = new JPanel();
 	private JPanel submitButtonRightPanel = new JPanel();
 	private JPanel requestPanel = new JPanel();
